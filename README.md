@@ -22,8 +22,6 @@
 
 **AuraNova** is an exploratory financial client interface built with **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. The project demonstrates how modern declarative UI principles and clean component hierarchies can deliver a responsive, premium native experience on mobile devices.
 
-All screens are rendered with 100% native UI code (Compose), without embedded WebViews or hybrid wrappers, ensuring smooth 120Hz performance and gesture responsiveness.
-
 ---
 
 ## App Preview
