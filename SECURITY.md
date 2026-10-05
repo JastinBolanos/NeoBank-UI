@@ -2,17 +2,18 @@
 
 ## Supported Versions
 
-Currently, only the main version receives security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | YES                |
-| < 1.0   | NO                 |
+| Version | Supported |
+| ------- | --------- |
+| >= 1.0.x| ✅ Yes     |
+| < 1.0   | ❌ No      |
 
 ## Reporting a Vulnerability
 
-We highly value the work of the security community. If you discover a vulnerability in AuraNova / NeoBankUI, please **DO NOT report it by creating a public Issue**.
+NeoBank UI KMP is an open-source architectural showcase. It does not handle real money, backend transactions, or sensitive user data.
 
-Instead, please **send a direct message through the freelance platform where this repository was linked**.
+However, code quality and UI architecture are core to this project. If you discover a vulnerability or a significant architectural flaw, we encourage you to report it. You can:
 
-Please provide details about the vulnerability, steps to reproduce it, and any possible mitigations. We will respond within a maximum of 48 hours to coordinate a patch before any public disclosure.
+1. Use GitHub's **Private Vulnerability Reporting** feature in this repository.
+2. Open a standard if it's a general UI or architectural bug.
+
+Pull Requests with stability and performance enhancements are always welcome!
