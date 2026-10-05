@@ -1,77 +1,21 @@
-================================================================================
-PROPRIETARY AND RESTRICTED USE LICENSE
+MIT License
 
-Copyright (c) 2026. All rights reserved.
-Software and Intellectual Property Owner: Jastin Bolanos / NeoBankUI-KMP
-Official Contact: Direct message via the freelance platform where this portfolio was discovered.
-================================================================================
+Copyright (c) 2026 Jastin Bolanos
 
-Permission is hereby granted to any person obtaining a copy of this software 
-and its associated documentation files (the "Software"), to use the source 
-code solely and exclusively for the purposes of STUDY, LEARNING, PERSONAL 
-RESEARCH, or TECHNICAL/ACADEMIC EVALUATION.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
--------------------------------------------------------------------------------
-1. STRICTLY PROHIBITED
--------------------------------------------------------------------------------
-1. REPLICATION AND VISUAL COMPOSITION PLAGIARISM: Forking or copying this 
-   repository, modifying less than fifty percent (50%) of the source code 
-   base or the visual structure of the user interface (UI/UX)—which includes 
-   the arrangement of boxes, layouts, specific background combinations, 
-   gradients, and the implemented color palette—and republishing it on 
-   public platforms under your own or a third party's authorship.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-2. UNAUTHORIZED COMMERCIAL USE: Using, copying, modifying, merging, 
-   publishing, distributing, or sublicensing this Software or any of its 
-   visual component designs for commercial or profit-driven purposes, or 
-   within production applications, without prior written consent from the 
-   Owner.
-
-3. EXCLUSIVE LOGO PROTECTION: Using the official project logo or any original 
-   visual identity graphic resources in external projects without prior 
-   consultation and formal agreement.
-
--------------------------------------------------------------------------------
-2. CLARIFICATION ON THE APPLICATION NAME
--------------------------------------------------------------------------------
-It is explicitly stated that the commercial name used in this project has a 
-purely demonstrative, educational, and placeholder character. The Owner does 
-not claim exclusive rights or intellectual property over said name and, 
-therefore, imposes no restrictions on its use. However, the Owner does not 
-grant any trademark authorization to third parties; it is the sole 
-responsibility of third parties to verify that their use does not infringe 
-upon existing trademark rights of other holders. The protection of this 
-license is strictly focused on the UI design, the code logic, and the logo.
-
--------------------------------------------------------------------------------
-3. COMMERCIAL USE AND COMPENSATION CONDITIONS
--------------------------------------------------------------------------------
-Any entity, company, or independent developer wishing to use, adapt, modify, 
-or commercially exploit the user interface (UI), the design of its 
-components, or the logic of this Software, must obligatorily contact the 
-Owner directly through the freelance platform where this repository was linked. 
-
-The parties may agree on a Commercial License subject to a formal agreement 
-and fair ECONOMIC COMPENSATION processed within the rules of said platform. 
-The granting of a commercial license to third parties will under no 
-circumstances oblige the Owner to remove, hide, or delete this repository 
-from the public domain.
-
--------------------------------------------------------------------------------
-4. EXCEPTIONS AND THIRD-PARTY RESOURCES
--------------------------------------------------------------------------------
-It is openly declared that certain graphic elements integrated into the 
-promotional carousel (such as external high-resolution 3D renders and icons) 
-have been legitimately obtained from free Figma community resources. These 
-elements are included for purely illustrative purposes within this portfolio, 
-while the Kotlin/Compose Multiplatform code architecture and the structural 
-and industrial design of the app's boxes and screens remain fully protected 
-by this license.
-
-================================================================================
-5. DISCLAIMER OF WARRANTY
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED. IN NO EVENT SHALL THE OWNER BE LIABLE FOR ANY CLAIM, DAMAGES, OR 
-OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
-================================================================================
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
