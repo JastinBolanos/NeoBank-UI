@@ -1,12 +1,12 @@
 <div align="center">
   <img src="docs/auranova_logo.png" alt="AuraNova Logo" width="100"/>
 
-  <h1>NeoBank UI KMP</h1>
-  <p><strong>Fintech Interface Showcase built with Kotlin Multiplatform.</strong></p>
+  <h1>NeoBank UI</h1>
+  <p><strong>Fintech Interface Showcase built with Kotlin and Jetpack Compose for Android.</strong></p>
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.x-blue.svg?style=flat-square&logo=kotlin)](https://kotlinlang.org)
-[![Compose Multiplatform](https://img.shields.io/badge/Compose-Multiplatform-purple.svg?style=flat-square&logo=android)](https://www.jetbrains.com/lp/compose-multiplatform/)
-[![iOS & Android](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-black?style=flat-square&logo=apple)]()
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack-Compose-purple.svg?style=flat-square&logo=android)](https://www.jetbrains.com/lp/compose-multiplatform/)
+[![Android](https://img.shields.io/badge/Platform-Android-black?style=flat-square&logo=android)]()
 [![CI/CD](https://img.shields.io/badge/Build-Passing-brightgreen.svg?style=flat-square&logo=githubactions)]()
 
 <p align="center">
@@ -20,7 +20,7 @@
 
 ## Overview
 
-**AuraNova** is an exploratory financial client interface built with **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. The project demonstrates how modern declarative UI principles and clean component hierarchies can deliver a responsive, premium native experience on mobile devices.
+**AuraNova** is an exploratory financial client interface built with **Kotlin** and **Jetpack Compose** for **Android**. The project demonstrates how modern declarative UI principles and clean component hierarchies can deliver a responsive, premium native experience on mobile devices.
 
 ---
 
@@ -44,12 +44,12 @@
 
 ## Technical Highlights
 
-* **Core Framework:** Kotlin Multiplatform and Compose Multiplatform targeting Android (Native) and iOS.
+* **Core Framework:** Kotlin and Jetpack Compose targeting Android.
 * **Architecture:** Clean Architecture with Feature-driven organization and structured State Hoisting.
 * **UI/UX Design:** High-fidelity Dark Mode utilizing native Compose canvas modifiers for translucent surfaces, soft shadows, and clean typographic hierarchies.
-* **Cross-Platform Navigation:** Back-stack handling implemented via Kotlin's `expect/actual` pattern (`KmpBackHandler`) to manage Android system back events consistently alongside iOS navigation gestures.
+* **Navigation:** Back-stack handling implemented via Android's `BackHandler` to manage Android system back events consistently.
 * **Gesture Interactions:** Smooth gesture handling (`detectHorizontalDragGestures`) paired with coordinated entrance animations (fade-in and slide-up).
-* **Continuous Integration:** Automated UI component compilation and `xcodebuild` validation via macOS GitHub Actions.
+* **Continuous Integration:** Automated UI component compilation and Gradle build validation via GitHub Actions.
 
 ---
 
@@ -57,9 +57,8 @@
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/JastinBolanos/NeoBankUI-KMP.git](https://github.com/JastinBolanos/NeoBankUI-KMP.git)
+   git clone https://github.com/JastinBolanos/NeoBankUI-KMP.git
    cd NeoBankUI-KMP
    ```
 
-2. **For Android:** Open the project in Android Studio, select the `composeApp` configuration, and press *Run*.
-
+2. **For Android:** Open the project in Android Studio, select the `app` configuration, and press *Run*.

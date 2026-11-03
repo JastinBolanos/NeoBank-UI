@@ -29,6 +29,6 @@ Para evitar cualquier confusión, se reitera (conforme al archivo `LICENSE` prin
 * La composición visual conjunta de las pantallas (la armonía lograda al orquestar las capas y elementos mediante código).
 * La implementación lógica del efecto *Glassmorphism* y las animaciones de los indicadores.
 * El logotipo original de la aplicación.
-* Toda la base de código fuente desarrollada en Kotlin y Compose Multiplatform.
+* Toda la base de código fuente desarrollada en Kotlin y Android (Jetpack Compose).
 
 **SÍ ESTÁN ESTRICTAMENTE PROTEGIDOS** por derechos de autor y sujetos a las restricciones descritas en la Licencia Propietaria de este repositorio.

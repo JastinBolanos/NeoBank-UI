@@ -1,41 +1,24 @@
 # ==========================================
-# 🛑 SEGURIDAD Y CLAVES (CRÍTICO)
-# ==========================================
-local.properties
-*.jks
-*.keystore
-key.properties
-google-services.json
-GoogleService-Info.plist
-secrets.properties
-
-# ==========================================
-# 🏗️ COMPILACIÓN KMP / ANDROID (BUILD)
+# 🏗️ GRADLE Y COMPILACIÓN ANDROID
 # ==========================================
 .gradle/
 build/
-*/build/
 **/build/
 .kotlin/
 captures/
 .externalNativeBuild/
 .cxx/
+*.apk
+*.aab
 
 # ==========================================
-# 🍏 IOS / XCODE
+# 🛑 SEGURIDAD Y CONFIGURACIÓN LOCAL
 # ==========================================
-xcuserdata/
-*.xcworkspace/xcuserdata/
-*.xcodeproj/xcuserdata/
-*.xcworkspace/contents.xcworkspacedata
-**/xcshareddata/WorkspaceSettings.xcsettings
-DerivedData/
-
-# Mantener la estructura del proyecto Xcode pero ignorar archivos de usuario
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
+local.properties
+*.jks
+key.properties
+secrets.properties
+.env
 
 # ==========================================
 # 💻 ENTORNOS DE DESARROLLO (IDE)
@@ -46,9 +29,7 @@ DerivedData/
 .vscode/
 
 # ==========================================
-# 🍎 SISTEMAS OPERATIVOS
+# 📁 SISTEMAS OPERATIVOS
 # ==========================================
 .DS_Store
-.AppleDouble
-.LSOverride
 Thumbs.db
