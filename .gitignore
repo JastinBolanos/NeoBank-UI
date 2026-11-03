@@ -19,6 +19,7 @@ local.properties
 key.properties
 secrets.properties
 .env
+metadata.json
 
 # ==========================================
 # 💻 ENTORNOS DE DESARROLLO (IDE)
