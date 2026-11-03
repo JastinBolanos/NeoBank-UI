@@ -57,8 +57,8 @@
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/JastinBolanos/NeoBankUI-KMP.git
-   cd NeoBankUI-KMP
+   git clone https://github.com/JastinBolanos/NeoBank-UI.git
+   cd NeoBank-UI
    ```
 
 2. **For Android:** Open the project in Android Studio, select the `app` configuration, and press *Run*.
