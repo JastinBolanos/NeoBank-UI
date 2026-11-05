@@ -48,6 +48,8 @@ fun CardsScreen(
     onNavigateToHome: () -> Unit = {},
     onNavigateToHistory: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
+    onNavigateToScanner: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {},
     selectedTab: NavTab = NavTab.Cards,
     onTabSelected: (NavTab) -> Unit = {}
 ) {
@@ -113,6 +115,7 @@ fun CardsScreen(
                         .size(44.dp)
                         .clip(CircleShape)
                         .background(Color.White.copy(alpha = 0.2f))
+                        .clickable { onNavigateToScanner() }
                         .padding(10.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -131,7 +134,8 @@ fun CardsScreen(
                     modifier = Modifier
                         .size(44.dp)
                         .clip(CircleShape)
-                        .background(Color.White.copy(alpha = 0.2f)),
+                        .background(Color.White.copy(alpha = 0.2f))
+                        .clickable { onNavigateToNotifications() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(

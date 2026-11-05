@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -76,6 +77,8 @@ fun TransactionHistoryScreen(
     onNavigateToHome: () -> Unit = {},
     onNavigateToCards: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
+    onNavigateToScanner: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {},
     selectedTab: NavTab = NavTab.History,
     onTabSelected: (NavTab) -> Unit = {}
 ) {
@@ -88,6 +91,7 @@ fun TransactionHistoryScreen(
     }
 
     val pagerState: PagerState = rememberPagerState(initialPage = 0, pageCount = { cardsData.size })
+    var selectedTransaction by remember { mutableStateOf<DetailedTransaction?>(null) }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -116,8 +120,14 @@ fun TransactionHistoryScreen(
                     modifier = Modifier.weight(1f)
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    CircleIcon(R.drawable.ic_scanner)
-                    CircleIcon(R.drawable.ic_bell)
+                    CircleIcon(
+                        res = R.drawable.ic_scanner,
+                        onClick = onNavigateToScanner
+                    )
+                    CircleIcon(
+                        res = R.drawable.ic_bell,
+                        onClick = onNavigateToNotifications
+                    )
                 }
             }
 
@@ -218,7 +228,12 @@ fun TransactionHistoryScreen(
                     contentPadding = PaddingValues(bottom = 120.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(transactions) { TransactionRow(it) }
+                    items(TransactionRepository.sampleTransactions) { tx ->
+                        TransactionRow(
+                            item = tx,
+                            onClick = { selectedTransaction = tx }
+                        )
+                    }
                 }
             }
         }
@@ -236,17 +251,28 @@ fun TransactionHistoryScreen(
                 }
             )
         }
+
+        if (selectedTransaction != null) {
+            TransactionDetailModal(
+                transaction = selectedTransaction!!,
+                onDismiss = { selectedTransaction = null }
+            )
+        }
     }
 }
 
 @Composable
-private fun CircleIcon(@DrawableRes res: Int) {
+private fun CircleIcon(
+    @DrawableRes res: Int,
+    onClick: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(CircleShape)
             .background(Color.White.copy(alpha = 0.2f))
-            .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape),
+            .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -259,13 +285,17 @@ private fun CircleIcon(@DrawableRes res: Int) {
 }
 
 @Composable
-private fun TransactionRow(item: TransactionUi) {
+private fun TransactionRow(
+    item: DetailedTransaction,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(Color.Black.copy(alpha = 0.35f))
             .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(16.dp))
+            .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -273,12 +303,13 @@ private fun TransactionRow(item: TransactionUi) {
             modifier = Modifier
                 .size(38.dp)
                 .clip(CircleShape)
-                .background(Color.White),
+                .background(Color.White.copy(alpha = 0.12f))
+                .border(1.dp, Color.White.copy(alpha = 0.2f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(item.icon),
-                contentDescription = item.name,
+                painter = painterResource(item.iconRes),
+                contentDescription = item.merchant,
                 modifier = Modifier.size(22.dp),
                 contentScale = ContentScale.Fit
             )
@@ -288,13 +319,13 @@ private fun TransactionRow(item: TransactionUi) {
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = item.name,
+                text = item.merchant,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White
             )
             Text(
-                text = item.description,
+                text = item.subtitle,
                 fontSize = 12.sp,
                 color = Color.White.copy(alpha = 0.7f),
                 modifier = Modifier.padding(top = 2.dp)

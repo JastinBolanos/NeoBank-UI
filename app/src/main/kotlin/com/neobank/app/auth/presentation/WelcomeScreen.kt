@@ -3,6 +3,10 @@ package com.neobank.app.auth.presentation
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,12 +27,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.pointerInput
@@ -46,6 +52,19 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun WelcomeScreen(onNavigateToHome: () -> Unit) {
+    val infiniteTransition = rememberInfiniteTransition(label = "cardsFloatingTransition")
+
+    // Movimiento suave, sedoso y lento estrictamente de costado (lateral)
+    val cardLateralState = infiniteTransition.animateFloat(
+        initialValue = -1f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 4200, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "cardsLateralFloat"
+    )
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(R.drawable.bg_neobank),
@@ -83,7 +102,12 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                         .align(Alignment.TopEnd)
                         .fillMaxWidth(0.85f)
                         .height(200.dp)
-                        .offset(x = 80.dp),
+                        .offset(x = 80.dp)
+                        .graphicsLayer {
+                            // Desplazamiento lateral suave sin rotación para eliminar vibración de texto
+                            translationX = -18.dp.toPx() * cardLateralState.value
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        },
                     containerAlpha = 0.08f
                 ) {
                     Column(
@@ -130,7 +154,12 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                         .align(Alignment.BottomStart)
                         .fillMaxWidth(0.9f)
                         .height(210.dp)
-                        .offset(y = (-20).dp),
+                        .offset(y = (-20).dp)
+                        .graphicsLayer {
+                            // Desplazamiento lateral en contrafase sin rotación ni temblor
+                            translationX = 16.dp.toPx() * cardLateralState.value
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        },
                     containerAlpha = 0.25f
                 ) {
                     Column(

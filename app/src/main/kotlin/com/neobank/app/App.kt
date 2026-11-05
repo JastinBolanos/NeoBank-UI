@@ -7,11 +7,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.neobank.app.auth.presentation.WelcomeScreen
+import com.neobank.app.bonuses.presentation.BonusesScreen
 import com.neobank.app.cards.presentation.CardsScreen
 import com.neobank.app.core.navigation.KmpBackHandler
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.home.presentation.HomeScreen
+import com.neobank.app.notifications.presentation.NotificationsScreen
 import com.neobank.app.profile.presentation.ProfileScreen
+import com.neobank.app.scanner.presentation.ScannerScreen
 import com.neobank.app.transactions.presentation.TransactionHistoryScreen
 import com.neobank.app.transfer.presentation.SendMoneyScreen
 
@@ -21,7 +24,10 @@ enum class Screen {
     History,
     Cards,
     SendMoney,
-    Profile
+    Profile,
+    Notifications,
+    Scanner,
+    Bonuses
 }
 
 private fun NavTab.toScreen(): Screen = when (this) {
@@ -76,33 +82,42 @@ fun App() {
 
             Screen.Home -> {
                 HomeScreen(
-                    balance = totalBalance,
-                    onNavigateToCards     = { navigateTo(Screen.Cards) },
-                    onNavigateToSendMoney = { navigateTo(Screen.SendMoney) },
-                    onNavigateToHistory   = { navigateTo(Screen.History) },
-                    onNavigateToProfile   = { navigateTo(Screen.Profile) },
-                    selectedTab           = NavTab.Home,
-                    onTabSelected         = onTabSelected
+                    balance                  = totalBalance,
+                    onNavigateToCards        = { navigateTo(Screen.Cards) },
+                    onNavigateToSendMoney    = { navigateTo(Screen.SendMoney) },
+                    onNavigateToHistory      = { navigateTo(Screen.History) },
+                    onNavigateToProfile      = { navigateTo(Screen.Profile) },
+                    onNavigateToScanner      = { navigateTo(Screen.Scanner) },
+                    onNavigateToNotifications= { navigateTo(Screen.Notifications) },
+                    onNavigateToBonuses      = { navigateTo(Screen.Bonuses) },
+                    onLogout                 = { navigateTo(Screen.Welcome) },
+                    onDeductBalance          = { amount -> totalBalance -= amount },
+                    selectedTab              = NavTab.Home,
+                    onTabSelected            = onTabSelected
                 )
             }
 
             Screen.History -> {
                 TransactionHistoryScreen(
-                    onNavigateToHome    = { navigateTo(Screen.Home) },
-                    onNavigateToCards   = { navigateTo(Screen.Cards) },
-                    onNavigateToProfile = { navigateTo(Screen.Profile) },
-                    selectedTab         = NavTab.History,
-                    onTabSelected       = onTabSelected
+                    onNavigateToHome         = { navigateTo(Screen.Home) },
+                    onNavigateToCards        = { navigateTo(Screen.Cards) },
+                    onNavigateToProfile      = { navigateTo(Screen.Profile) },
+                    onNavigateToScanner      = { navigateTo(Screen.Scanner) },
+                    onNavigateToNotifications= { navigateTo(Screen.Notifications) },
+                    selectedTab              = NavTab.History,
+                    onTabSelected            = onTabSelected
                 )
             }
 
             Screen.Cards -> {
                 CardsScreen(
-                    onNavigateToHome    = { navigateTo(Screen.Home) },
-                    onNavigateToHistory = { navigateTo(Screen.History) },
-                    onNavigateToProfile = { navigateTo(Screen.Profile) },
-                    selectedTab         = NavTab.Cards,
-                    onTabSelected       = onTabSelected
+                    onNavigateToHome         = { navigateTo(Screen.Home) },
+                    onNavigateToHistory      = { navigateTo(Screen.History) },
+                    onNavigateToProfile      = { navigateTo(Screen.Profile) },
+                    onNavigateToScanner      = { navigateTo(Screen.Scanner) },
+                    onNavigateToNotifications= { navigateTo(Screen.Notifications) },
+                    selectedTab              = NavTab.Cards,
+                    onTabSelected            = onTabSelected
                 )
             }
 
@@ -122,8 +137,37 @@ fun App() {
                     onNavigateToHome    = { navigateTo(Screen.Home) },
                     onNavigateToCards   = { navigateTo(Screen.Cards) },
                     onNavigateToHistory = { navigateTo(Screen.History) },
+                    onLogout            = { navigateTo(Screen.Welcome) },
                     selectedTab         = NavTab.Profile,
                     onTabSelected       = onTabSelected
+                )
+            }
+
+            Screen.Notifications -> {
+                NotificationsScreen(
+                    onBackClick = { goBack() },
+                    onNavigateToTransfer = { navigateTo(Screen.SendMoney) },
+                    onNavigateToCards = { navigateTo(Screen.Cards) }
+                )
+            }
+
+            Screen.Scanner -> {
+                ScannerScreen(
+                    currentBalance = totalBalance,
+                    onBackClick = { goBack() },
+                    onPaymentSuccess = { amountPaid ->
+                        totalBalance -= amountPaid
+                    }
+                )
+            }
+
+            Screen.Bonuses -> {
+                BonusesScreen(
+                    currentBalance = totalBalance,
+                    onBackClick = { goBack() },
+                    onRedeemBonus = { amountToRedeem ->
+                        totalBalance += amountToRedeem
+                    }
                 )
             }
         }

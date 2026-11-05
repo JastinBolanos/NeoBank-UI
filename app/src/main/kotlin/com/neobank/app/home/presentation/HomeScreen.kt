@@ -21,8 +21,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import com.neobank.app.transactions.presentation.DetailedTransaction
+import com.neobank.app.transactions.presentation.TransactionDetailModal
+import com.neobank.app.transactions.presentation.TransactionRepository
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -71,6 +75,11 @@ fun HomeScreen(
     onNavigateToSendMoney: () -> Unit = {},
     onNavigateToHistory: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
+    onNavigateToScanner: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {},
+    onNavigateToBonuses: () -> Unit = {},
+    onLogout: () -> Unit = {},
+    onDeductBalance: (Double) -> Unit = {},
     selectedTab: NavTab = NavTab.Home,
     onTabSelected: (NavTab) -> Unit = {}
 ) {
@@ -94,7 +103,11 @@ fun HomeScreen(
                     .weight(1.28f)
             ) {
                 Spacer(modifier = Modifier.height(64.dp))
-                TopBarSection(modifier = Modifier.padding(horizontal = 24.dp))
+                TopBarSection(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    onScannerClick = onNavigateToScanner,
+                    onNotificationsClick = onNavigateToNotifications
+                )
                 Spacer(modifier = Modifier.height(32.dp))
                 BalanceSection(balance = balance)
                 Spacer(modifier = Modifier.height(32.dp))
@@ -102,6 +115,7 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     onCardsClick = onNavigateToCards,
                     onTransferClick = onNavigateToSendMoney,
+                    onBonusesClick = onNavigateToBonuses,
                     onMoreClick = { isMenuOpen = true }
                 )
                 Spacer(modifier = Modifier.height(28.dp))
@@ -166,7 +180,12 @@ fun HomeScreen(
         ) {
             MenuPanel(
                 onClose = { isMenuOpen = false },
-                onNavigateToProfile = onNavigateToProfile
+                onNavigateToProfile = onNavigateToProfile,
+                onNavigateToScanner = onNavigateToScanner,
+                onNavigateToBonuses = onNavigateToBonuses,
+                onLogout = onLogout,
+                onDeductBalance = onDeductBalance,
+                currentBalance = balance
             )
         }
     }
@@ -174,7 +193,11 @@ fun HomeScreen(
 
 // --- SUB-COMPONENTS ---
 @Composable
-private fun TopBarSection(modifier: Modifier = Modifier) {
+private fun TopBarSection(
+    modifier: Modifier = Modifier,
+    onScannerClick: () -> Unit = {},
+    onNotificationsClick: () -> Unit = {}
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -203,7 +226,8 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(44.dp)
                     .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.2f)),
+                    .background(Color.White.copy(alpha = 0.2f))
+                    .clickable { onScannerClick() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -219,7 +243,8 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(44.dp)
                     .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.2f)),
+                    .background(Color.White.copy(alpha = 0.2f))
+                    .clickable { onNotificationsClick() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -287,6 +312,7 @@ private fun QuickActionsSection(
     modifier: Modifier = Modifier,
     onCardsClick: () -> Unit,
     onTransferClick: () -> Unit,
+    onBonusesClick: () -> Unit,
     onMoreClick: () -> Unit
 ) {
     Row(
@@ -308,7 +334,7 @@ private fun QuickActionsSection(
         ActionItemPainter(
             painter = painterResource(R.drawable.ic_bonuses),
             label = "My bonuses",
-            onClick = { /* Future logic */ }
+            onClick = onBonusesClick
         )
 
         ActionItemPainter(
@@ -619,6 +645,7 @@ private fun LoadingDot(isActive: Boolean) {
 @Composable
 private fun TransactionsSection(bottomPadding: Dp = 0.dp) {
     var isTransactionsVisible by remember { mutableStateOf(false) }
+    var selectedTransaction by remember { mutableStateOf<DetailedTransaction?>(null) }
 
     LaunchedEffect(Unit) {
         delay(100)
@@ -640,70 +667,61 @@ private fun TransactionsSection(bottomPadding: Dp = 0.dp) {
         label = "slideAnim"
     )
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .graphicsLayer {
-                alpha = alphaAnim
-                translationY = slideAnim
-            },
-        contentPadding = PaddingValues(
-            start = 14.dp,
-            end = 14.dp,
-            top = 20.dp,
-            bottom = bottomPadding
-        ),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        item {
-            Text(
-                text = "TRANSACTIONS",
-                color = Color.White.copy(alpha = 0.8f),
-                fontSize = 14.sp,
-                fontFamily = FontFamily.Serif,
-                letterSpacing = 2.sp,
-                modifier = Modifier.padding(bottom = 6.dp)
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    alpha = alphaAnim
+                    translationY = slideAnim
+                },
+            contentPadding = PaddingValues(
+                start = 14.dp,
+                end = 14.dp,
+                top = 20.dp,
+                bottom = bottomPadding
+            ),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "TRANSACTIONS",
+                        color = Color.White.copy(alpha = 0.85f),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily.Serif,
+                        letterSpacing = 2.sp
+                    )
+                    Text(
+                        text = "Tap to view receipt",
+                        color = Color(0xFF00F2FE).copy(alpha = 0.75f),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            items(TransactionRepository.sampleTransactions.take(5)) { tx ->
+                TransactionItem(
+                    painter = painterResource(tx.iconRes),
+                    title = tx.merchant,
+                    subtitle = tx.subtitle,
+                    amount = tx.amount,
+                    onClick = { selectedTransaction = tx }
+                )
+            }
         }
 
-        item {
-            TransactionItem(
-                painter = painterResource(R.drawable.ic_google),
-                title = "Google",
-                subtitle = "Google Workspace Subscription",
-                amount = "- $12.00"
-            )
-        }
-        item {
-            TransactionItem(
-                painter = painterResource(R.drawable.ic_youtube),
-                title = "YouTube",
-                subtitle = "YouTube Premium Family",
-                amount = "- $11.99"
-            )
-        }
-        item {
-            TransactionItem(
-                painter = painterResource(R.drawable.ic_facebook),
-                title = "Facebook",
-                subtitle = "Ads Campaign Billing",
-                amount = "- $50.00"
-            )
-        }
-        item {
-            TransactionItem(
-                painter = painterResource(R.drawable.ic_visa),
-                title = "Visa",
-                subtitle = "Credit Card Payment",
-                amount = "- $150.00"
-            )
-        }
-        item {
-            TransactionItem(
-                painter = painterResource(R.drawable.ic_claro),
-                title = "Claro",
-                subtitle = "Monthly Internet Bill",
-                amount = "- $35.00"
+        if (selectedTransaction != null) {
+            TransactionDetailModal(
+                transaction = selectedTransaction!!,
+                onDismiss = { selectedTransaction = null }
             )
         }
     }
@@ -714,7 +732,8 @@ private fun TransactionItem(
     painter: Painter,
     title: String,
     subtitle: String,
-    amount: String
+    amount: String,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -726,15 +745,25 @@ private fun TransactionItem(
                 color = Color.White.copy(alpha = 0.15f),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .clickable { onClick() }
+            .padding(horizontal = 14.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painter,
-            contentDescription = title,
-            modifier = Modifier.size(24.dp),
-            contentScale = ContentScale.Fit
-        )
+        Box(
+            modifier = Modifier
+                .size(34.dp)
+                .clip(CircleShape)
+                .background(Color.White.copy(alpha = 0.12f))
+                .border(1.dp, Color.White.copy(alpha = 0.2f), CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = title,
+                modifier = Modifier.size(20.dp),
+                contentScale = ContentScale.Fit
+            )
+        }
 
         Spacer(modifier = Modifier.width(14.dp))
 
