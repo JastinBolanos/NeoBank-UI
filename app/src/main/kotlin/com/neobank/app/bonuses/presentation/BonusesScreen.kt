@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Workspaces
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
@@ -886,42 +887,34 @@ private fun BoostersTrayView(
     boosters: List<BoosterCategory>,
     onToggle: (String) -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .padding(horizontal = 24.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(Color.Black.copy(alpha = 0.42f))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(22.dp))
     ) {
-        boosters.forEach { item ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(if (item.isEnabled) Color.Black.copy(alpha = 0.55f) else Color.Black.copy(alpha = 0.3f))
-                    .border(
-                        1.dp,
-                        if (item.isEnabled) item.color.copy(alpha = 0.5f) else Color.White.copy(alpha = 0.1f),
-                        RoundedCornerShape(18.dp)
-                    )
-                    .padding(16.dp)
-            ) {
+        Column {
+            boosters.forEachIndexed { index, item ->
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(46.dp)
+                            .size(42.dp)
                             .clip(CircleShape)
-                            .background(item.color.copy(alpha = 0.2f))
-                            .border(1.dp, item.color.copy(alpha = 0.4f), CircleShape),
+                            .background(item.color.copy(alpha = 0.18f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = item.icon,
                             contentDescription = null,
                             tint = item.color,
-                            modifier = Modifier.size(22.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
 
@@ -932,21 +925,22 @@ private fun BoostersTrayView(
                             Text(
                                 text = item.title,
                                 color = Color.White,
-                                fontSize = 15.sp,
+                                fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = item.multiplier,
                                 color = item.color,
-                                fontSize = 12.sp,
+                                fontSize = 11.5.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
+                        Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = item.subtitle,
-                            color = Color.White.copy(alpha = 0.6f),
-                            fontSize = 12.sp
+                            color = Color.White.copy(alpha = 0.55f),
+                            fontSize = 11.5.sp
                         )
                     }
 
@@ -959,6 +953,14 @@ private fun BoostersTrayView(
                             uncheckedThumbColor = Color.White.copy(alpha = 0.7f),
                             uncheckedTrackColor = Color.White.copy(alpha = 0.15f)
                         )
+                    )
+                }
+
+                if (index < boosters.size - 1) {
+                    HorizontalDivider(
+                        color = Color.White.copy(alpha = 0.06f),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(start = 72.dp, end = 16.dp)
                     )
                 }
             }
@@ -974,26 +976,21 @@ private fun QuestsTrayView(
     quests: List<BankingQuest>,
     onClaim: (String) -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = 24.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(Color.Black.copy(alpha = 0.4f))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(22.dp))
     ) {
-        quests.forEach { quest ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color.Black.copy(alpha = 0.45f))
-                    .border(
-                        1.dp,
-                        if (quest.isCompleted && !quest.isClaimed) Color(0xFF00E676).copy(alpha = 0.6f) else Color.White.copy(alpha = 0.12f),
-                        RoundedCornerShape(20.dp)
-                    )
-                    .padding(16.dp)
-            ) {
-                Column {
+        Column {
+            quests.forEachIndexed { index, quest ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1002,14 +999,14 @@ private fun QuestsTrayView(
                         Text(
                             text = quest.title,
                             color = Color.White,
-                            fontSize = 15.sp,
+                            fontSize = 14.5.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             text = quest.reward,
                             color = if (quest.reward.contains("$")) Color(0xFF00E676) else Color(0xFF00F2FE),
-                            fontSize = 13.sp,
+                            fontSize = 12.5.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -1019,11 +1016,11 @@ private fun QuestsTrayView(
                     Text(
                         text = quest.description,
                         color = Color.White.copy(alpha = 0.65f),
-                        fontSize = 12.sp,
-                        lineHeight = 16.sp
+                        fontSize = 11.5.sp,
+                        lineHeight = 15.sp
                     )
 
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     // Progress bar or Claim Action
                     if (quest.isCompleted) {
@@ -1047,11 +1044,11 @@ private fun QuestsTrayView(
                             Surface(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(42.dp)
-                                    .clip(RoundedCornerShape(21.dp))
+                                    .height(40.dp)
+                                    .clip(RoundedCornerShape(20.dp))
                                     .clickable { onClaim(quest.id) },
                                 color = Color(0xFF00E676),
-                                shape = RoundedCornerShape(21.dp)
+                                shape = RoundedCornerShape(20.dp)
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Text(
@@ -1101,6 +1098,14 @@ private fun QuestsTrayView(
                             }
                         }
                     }
+                }
+
+                if (index < quests.size - 1) {
+                    HorizontalDivider(
+                        color = Color.White.copy(alpha = 0.06f),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
                 }
             }
         }
@@ -1434,60 +1439,71 @@ private fun RecentBonusLedgerSection() {
         Triple("Monthly Savings Vault Staking", "3.5% APY compounding payout", "+$72.85")
     )
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .padding(horizontal = 24.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(Color.Black.copy(alpha = 0.35f))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(22.dp))
     ) {
-        items.forEach { (title, subtitle, amount) ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color.Black.copy(alpha = 0.35f))
-                    .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
+        Column {
+            items.forEachIndexed { index, (title, subtitle, amount) ->
+                Row(
                     modifier = Modifier
-                        .size(38.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFF00E676).copy(alpha = 0.15f)),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        tint = Color(0xFF00E676),
-                        modifier = Modifier.size(18.dp)
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF00E676).copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = Color(0xFF00E676),
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(14.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = title,
+                            color = Color.White,
+                            fontSize = 13.5.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = subtitle,
+                            color = Color.White.copy(alpha = 0.55f),
+                            fontSize = 11.sp
+                        )
+                    }
+
+                    Text(
+                        text = amount,
+                        color = if (amount.contains("pts")) Color(0xFF00F2FE) else Color(0xFF00E676),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
 
-                Spacer(modifier = Modifier.width(14.dp))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = title,
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = subtitle,
-                        color = Color.White.copy(alpha = 0.55f),
-                        fontSize = 11.sp
+                if (index < items.size - 1) {
+                    HorizontalDivider(
+                        color = Color.White.copy(alpha = 0.06f),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(start = 66.dp, end = 16.dp)
                     )
                 }
-
-                Text(
-                    text = amount,
-                    color = if (amount.contains("pts")) Color(0xFF00F2FE) else Color(0xFF00E676),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
     }
 }
+

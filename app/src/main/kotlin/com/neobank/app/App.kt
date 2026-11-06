@@ -12,6 +12,8 @@ import com.neobank.app.cards.presentation.CardsScreen
 import com.neobank.app.core.navigation.KmpBackHandler
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.home.presentation.HomeScreen
+import com.neobank.app.home.presentation.ProductCatalog
+import com.neobank.app.home.presentation.ProductDetailScreen
 import com.neobank.app.notifications.presentation.NotificationsScreen
 import com.neobank.app.profile.presentation.ProfileScreen
 import com.neobank.app.scanner.presentation.ScannerScreen
@@ -27,7 +29,8 @@ enum class Screen {
     Profile,
     Notifications,
     Scanner,
-    Bonuses
+    Bonuses,
+    ProductDetail
 }
 
 private fun NavTab.toScreen(): Screen = when (this) {
@@ -43,6 +46,7 @@ fun App() {
     MaterialTheme {
         var screenStack by remember { mutableStateOf(listOf(Screen.Welcome)) }
         var totalBalance by remember { mutableStateOf(50000.00) }
+        var selectedProductTitle by remember { mutableStateOf<String?>(null) }
         val currentScreen = screenStack.last()
 
         val navigateTo: (Screen) -> Unit = { screen ->
@@ -92,6 +96,10 @@ fun App() {
                     onNavigateToBonuses      = { navigateTo(Screen.Bonuses) },
                     onLogout                 = { navigateTo(Screen.Welcome) },
                     onDeductBalance          = { amount -> totalBalance -= amount },
+                    onNavigateToProduct      = { title ->
+                        selectedProductTitle = title
+                        navigateTo(Screen.ProductDetail)
+                    },
                     selectedTab              = NavTab.Home,
                     onTabSelected            = onTabSelected
                 )
@@ -167,6 +175,21 @@ fun App() {
                     onBackClick = { goBack() },
                     onRedeemBonus = { amountToRedeem ->
                         totalBalance += amountToRedeem
+                    }
+                )
+            }
+
+            Screen.ProductDetail -> {
+                val product = ProductCatalog.products[selectedProductTitle] ?: ProductCatalog.products.values.first()
+                ProductDetailScreen(
+                    product = product,
+                    currentBalance = totalBalance,
+                    onBackClick = { goBack() },
+                    onDisburseCredit = { amount ->
+                        totalBalance += amount
+                    },
+                    onInvestMoney = { amount ->
+                        totalBalance -= amount
                     }
                 )
             }

@@ -80,6 +80,7 @@ fun HomeScreen(
     onNavigateToBonuses: () -> Unit = {},
     onLogout: () -> Unit = {},
     onDeductBalance: (Double) -> Unit = {},
+    onNavigateToProduct: (String) -> Unit = {},
     selectedTab: NavTab = NavTab.Home,
     onTabSelected: (NavTab) -> Unit = {}
 ) {
@@ -119,7 +120,9 @@ fun HomeScreen(
                     onMoreClick = { isMenuOpen = true }
                 )
                 Spacer(modifier = Modifier.height(28.dp))
-                PromoCardsSection()
+                PromoCardsSection(
+                    onBannerClick = onNavigateToProduct
+                )
             }
 
             // --- BOTTOM HALF ---
@@ -428,7 +431,9 @@ private fun ActionItemPainter(
 // SECTION: INFINITE CAROUSEL WITH REAL BANNERS AND 3D IMAGES
 // =========================================================================
 @Composable
-private fun PromoCardsSection() {
+private fun PromoCardsSection(
+    onBannerClick: (String) -> Unit = {}
+) {
     val banners = listOf(
         PromoBanner(
             title = "Upgrade to Metal",
@@ -470,7 +475,7 @@ private fun PromoCardsSection() {
     )
 
     LaunchedEffect(pagerState.settledPage) {
-        delay(3000)
+        delay(3500)
         pagerState.animateScrollToPage(
             page = pagerState.currentPage + 1,
             animationSpec = tween(
@@ -494,13 +499,14 @@ private fun PromoCardsSection() {
             val actualPage = page % actualPageCount
             val currentBanner = banners[actualPage]
 
-            // BANNER DESIGN
+            // BANNER DESIGN WITH CLICKABLE SCREEN TRIGGER
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .background(currentBanner.backgroundColor)
+                    .clickable { onBannerClick(currentBanner.title) }
             ) {
                 // --------------------------------------------------------
                 // 1. EXCLUSIVE BACKGROUNDS
